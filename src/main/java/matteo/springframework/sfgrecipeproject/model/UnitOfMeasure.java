@@ -12,4 +12,6 @@ public class UnitOfMeasure {
     private Long id;
 
     private String uom;
+
+    private String description;
 }
