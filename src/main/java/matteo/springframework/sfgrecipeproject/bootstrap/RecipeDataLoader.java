@@ -72,7 +72,7 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
                 "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws";
 
         guacamoleRecipe = initializeRecipe("Perfect guacamole!", 10, 0, Difficulty.EASY, guacamoleDirections, guacamoleNotes);
-
+        guacamoleRecipe.setNotes(setRecipeNotes(guacamoleRecipe, guacamoleNotes));
         // adding ingredients to guacamole recipe
         guacamoleRecipe.getIngredients().add(new Ingredient("ripe avocados", new BigDecimal(2), eachUom, guacamoleRecipe));
         guacamoleRecipe.getIngredients().add(new Ingredient("salt, plus more to taste", new BigDecimal(1/4), teaSpoonUom, guacamoleRecipe));
@@ -113,6 +113,7 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
                 "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ";
 
         tacosRecipe = initializeRecipe("Yummy taco's", 9, 20, Difficulty.MODERATE, tacoDirections, tacoNotes);
+        tacosRecipe.setNotes(setRecipeNotes(tacosRecipe, tacoNotes));
 
         tacosRecipe.getIngredients().add(new Ingredient("Ancho Chili Powder", new BigDecimal(2), tableSpoonUom, tacosRecipe));
         tacosRecipe.getIngredients().add(new Ingredient("Dried Oregano", new BigDecimal(1), teaSpoonUom, tacosRecipe));
@@ -168,13 +169,16 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         recipe.setCookTime(cookTime);
         recipe.setDifficulty(difficulty);
         recipe.setDirections(directions);
-        recipe.setNotes(setNotes(recipeNotes));
+
         return recipe;
     }
 
-    private Notes setNotes(String recipeNotes) {
+    private static Notes setRecipeNotes(Recipe recipe, String recipeNotes) {
         Notes notes = new Notes();
+        notes.setRecipe(recipe);
         notes.setRecipeNotes(recipeNotes);
         return notes;
     }
+
+
 }
