@@ -1,7 +1,10 @@
 package matteo.springframework.sfgrecipeproject.model;
 
 
+import net.bytebuddy.description.field.FieldDescription;
+
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -118,6 +121,18 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
+        notes.setRecipe(this);
+    }
+
+    public Recipe addIngredient(Ingredient ingredient) {
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+        return this;
+    }
+
+    public void removeIngredient(Ingredient ingredient) {
+        ingredient.setRecipe(this);
+        this.ingredients.remove(ingredient);
     }
 
     public Set<Ingredient> getIngredients() {
