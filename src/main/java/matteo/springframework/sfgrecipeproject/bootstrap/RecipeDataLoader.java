@@ -1,5 +1,7 @@
 package matteo.springframework.sfgrecipeproject.bootstrap;
 
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.model.*;
 import matteo.springframework.sfgrecipeproject.repositories.CategoryRepository;
 import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
