@@ -1,6 +1,5 @@
 package matteo.springframework.sfgrecipeproject.bootstrap;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.model.*;
 import matteo.springframework.sfgrecipeproject.repositories.CategoryRepository;
@@ -10,6 +9,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,7 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+
         recipeRepository.saveAll(getRecipes());
     }
 
