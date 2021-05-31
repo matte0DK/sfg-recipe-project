@@ -9,7 +9,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +37,7 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
     private List<Recipe> getRecipes() {
         List<Recipe> recipes = new ArrayList<>();
 
+        // recipe's
         Recipe guacamoleRecipe;
         Recipe tacosRecipe;
 
@@ -53,7 +53,7 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         Category mexicanCategory = getCategoryFromDB("Mexican");
         Category americanCategory = getCategoryFromDB("American");
 
-        /*GET GUACAMOLE RECIPE*/
+        // directions
         String guacamoleDirections = "1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon" +
                 "\n" +
                 "2 Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky.)" +
@@ -67,6 +67,7 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
                 "\n" +
                 "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvpiV9Sd";
 
+        // notes
         String guacamoleNotes = "For a very quick guacamole just take a 1/4 cup of salsa and mix it in with your mashed avocados.\n" +
                 "Feel free to experiment! One classic Mexican guacamole has pomegranate seeds and chunks of peaches in it (a Diana Kennedy favorite). Try guacamole with added pineapple, mango, or strawberries.\n" +
                 "The simplest version of guacamole is just mashed avocados with salt. Don't let the lack of availability of other ingredients stop you from making guacamole.\n" +
@@ -75,8 +76,10 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
                 "\n" +
                 "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws";
 
+        // initializing recipe
         guacamoleRecipe = initializeRecipe("Perfect guacamole!", 10, 0, Difficulty.EASY, guacamoleDirections, guacamoleNotes);
         guacamoleRecipe.setNotes(setRecipeNotes(guacamoleNotes));
+
         // adding ingredients to guacamole recipe
         guacamoleRecipe.addIngredient(new Ingredient("ripe avocados", new BigDecimal(2), eachUom));
         guacamoleRecipe.addIngredient(new Ingredient("salt, plus more to taste", new BigDecimal(1/4), teaSpoonUom));
