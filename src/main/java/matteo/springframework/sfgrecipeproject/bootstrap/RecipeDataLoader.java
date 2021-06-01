@@ -93,7 +93,9 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         guacamoleRecipe.getCategories().add(americanCategory);
         guacamoleRecipe.getCategories().add(mexicanCategory);
 
+        guacamoleRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/");
         guacamoleRecipe.setServings(4);
+        guacamoleRecipe.setSource("Simply Recipes");
 
         // adding guacamole recipe to recipes
         recipes.add(guacamoleRecipe);
