@@ -93,6 +93,8 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         guacamoleRecipe.getCategories().add(americanCategory);
         guacamoleRecipe.getCategories().add(mexicanCategory);
 
+        guacamoleRecipe.setServings(4);
+
         // adding guacamole recipe to recipes
         recipes.add(guacamoleRecipe);
 

@@ -20,7 +20,7 @@
 
 </head>
 <body>
-<div class="container-lg" style="margin: 30px;">
+<div class="container-fluid" style="margin: 30px 25%;">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">
@@ -30,28 +30,34 @@
                         style="background-color: cornflowerblue; padding: 1rem; color: aliceblue;">My Recipes!</h1>
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body" style="padding: 1rem">
                     <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
                         <table class="table table-hover">
                             <thead class="thead-inverse">
                             <tr>
                                 <th>IDs</th>
                                 <th>Description</th>
+                                <th>View</th>
                             </tr>
                             </thead>
                             <tr th:remove="all">
-                                <td th:text="${recipe.id}">123</td>
-                                <td th:text="${recipe.description}">Tasty 1</td>
+                                <td>123</td>
+                                <td>Tasty 1</td>
+                                <td><a href="#">View</a></td>
                             </tr>
 
                             <tr th:remove="all">
-                                <td th:text="${recipe.id}">123</td>
-                                <td th:text="${recipe.description}">Tasty 2</td>
+                                <td>456</td>
+                                <td>Tasty 2</td>
+                                <td><a href="#">View</a></td>
                             </tr>
 
                             <tr th:each="recipe : ${recipes}">
-                                <td th:text="${recipe.id}">123</td>
+                                <!--/*themesVar id ="recipe" type="matteo.springframework.sfgrecipeproject.model.Recipe"*/-->
+                                <td th:text="${recipe.id}">789</td>
                                 <td th:text="${recipe.description}">Tasty 3</td>
+                                <td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}"
+                                       th:text="${recipe.id}">View</a></td>
                             </tr>
                         </table>
                     </div>

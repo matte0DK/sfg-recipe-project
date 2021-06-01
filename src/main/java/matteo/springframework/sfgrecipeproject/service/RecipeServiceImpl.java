@@ -6,6 +6,7 @@ import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -24,5 +25,14 @@ public class RecipeServiceImpl implements RecipeService {
         Set<Recipe> recipeSet = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipe -> recipeSet.add(recipe));
         return recipeSet;
+    }
+
+    @Override
+    public Recipe findById(long id) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        if (optionalRecipe.isEmpty()) {
+            throw new RuntimeException();
+        }
+        return optionalRecipe.get();
     }
 }
