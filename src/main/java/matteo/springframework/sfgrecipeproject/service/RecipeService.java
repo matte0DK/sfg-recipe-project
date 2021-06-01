@@ -1,5 +1,6 @@
 package matteo.springframework.sfgrecipeproject.service;
 
+import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
 import matteo.springframework.sfgrecipeproject.model.Recipe;
 import org.springframework.stereotype.Service;
 
@@ -9,4 +10,6 @@ public interface RecipeService {
     Set<Recipe> getRecipes();
 
     Recipe findById(long id);
+
+    RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand);
 }

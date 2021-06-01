@@ -1,5 +1,7 @@
 package matteo.springframework.sfgrecipeproject.service;
 
+import matteo.springframework.sfgrecipeproject.converters.RecipeCommandToRecipe;
+import matteo.springframework.sfgrecipeproject.converters.RecipeToRecipeCommand;
 import matteo.springframework.sfgrecipeproject.model.Recipe;
 import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,13 +20,20 @@ class RecipeServiceImplTest {
 
     @Mock
     RecipeRepository recipeRepository;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
     RecipeService recipeService;
 
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test

@@ -1,22 +1,26 @@
 package matteo.springframework.sfgrecipeproject.service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
+import matteo.springframework.sfgrecipeproject.converters.RecipeCommandToRecipe;
+import matteo.springframework.sfgrecipeproject.converters.RecipeToRecipeCommand;
 import matteo.springframework.sfgrecipeproject.model.Recipe;
 import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
+@AllArgsConstructor
 @Service
 public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
-
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
-    }
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
     @Override
     public Set<Recipe> getRecipes() {
@@ -34,5 +38,15 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException();
         }
         return optionalRecipe.get();
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(recipeCommand);
+
+        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+        log.debug("saved recipeId: " + savedRecipe.getId());
+        return recipeToRecipeCommand.convert(savedRecipe);
     }
 }
