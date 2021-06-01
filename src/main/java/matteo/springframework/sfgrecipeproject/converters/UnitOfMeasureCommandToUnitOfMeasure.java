@@ -13,15 +13,15 @@ public class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitOfMeas
     @Synchronized
     @Nullable
     @Override
-    public UnitOfMeasure convert(UnitOfMeasureCommand source) {
-        if (source == null) {
+    public UnitOfMeasure convert(UnitOfMeasureCommand unitOfMeasureCommand) {
+        if (unitOfMeasureCommand == null) {
             return null;
         }
 
         final UnitOfMeasure uom = new UnitOfMeasure();
 
-        uom.setId(source.getId());
-        uom.setDescription(source.getDescription());
+        uom.setId(unitOfMeasureCommand.getId());
+        uom.setDescription(unitOfMeasureCommand.getDescription());
 
         return uom;
     }

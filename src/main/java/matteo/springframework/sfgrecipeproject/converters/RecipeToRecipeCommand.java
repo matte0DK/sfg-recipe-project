@@ -25,30 +25,30 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
     @Synchronized
     @Nullable
     @Override
-    public RecipeCommand convert(Recipe source) {
-        if (source == null) {
+    public RecipeCommand convert(Recipe recipe) {
+        if (recipe == null) {
             return null;
         }
 
         final RecipeCommand command = new RecipeCommand();
-        command.setId(source.getId());
-        command.setCookTime(source.getCookTime());
-        command.setPrepTime(source.getPrepTime());
-        command.setDescription(source.getDescription());
-        command.setDifficulty(source.getDifficulty());
-        command.setDirections(source.getDirections());
-        command.setServings(source.getServings());
-        command.setSource(source.getSource());
-        command.setUrl(source.getUrl());
-        command.setNotes(notesConverter.convert(source.getNotes()));
+        command.setId(recipe.getId());
+        command.setCookTime(recipe.getCookTime());
+        command.setPrepTime(recipe.getPrepTime());
+        command.setDescription(recipe.getDescription());
+        command.setDifficulty(recipe.getDifficulty());
+        command.setDirections(recipe.getDirections());
+        command.setServings(recipe.getServings());
+        command.setSource(recipe.getSource());
+        command.setUrl(recipe.getUrl());
+        command.setNotes(notesConverter.convert(recipe.getNotes()));
 
-        if (source.getCategories() != null && source.getCategories().size() > 0){
-            source.getCategories()
+        if (recipe.getCategories() != null && recipe.getCategories().size() > 0){
+            recipe.getCategories()
                     .forEach((Category category) -> command.getCategories().add(categoryConveter.convert(category)));
         }
 
-        if (source.getIngredients() != null && source.getIngredients().size() > 0){
-            source.getIngredients()
+        if (recipe.getIngredients() != null && recipe.getIngredients().size() > 0){
+            recipe.getIngredients()
                     .forEach(ingredient -> command.getIngredients().add(ingredientConverter.convert(ingredient)));
         }
 

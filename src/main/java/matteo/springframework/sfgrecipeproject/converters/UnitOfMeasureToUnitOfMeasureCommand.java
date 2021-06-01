@@ -14,6 +14,9 @@ public class UnitOfMeasureToUnitOfMeasureCommand implements Converter<UnitOfMeas
     @Nullable
     @Override
     public UnitOfMeasureCommand convert(UnitOfMeasure unitOfMeasure) {
+        if (unitOfMeasure == null) {
+            return null;
+        }
 
         if (unitOfMeasure != null) {
             final UnitOfMeasureCommand uomc = new UnitOfMeasureCommand();
