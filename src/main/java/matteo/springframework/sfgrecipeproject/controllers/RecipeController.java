@@ -43,18 +43,17 @@ public class RecipeController {
         return "recipe/recipeform";
     }
 
+    @PostMapping("recipe")
+    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+        RecipeCommand recipeCommand = recipeService.saveRecipeCommand(command);
+
+        return "redirect:/recipe/" + recipeCommand.getId() + "/show";
+    }
+
     @GetMapping
     @RequestMapping("/recipe/{id}/delete")
     public String deleteRecipe(@PathVariable String id) {
         recipeService.deleteById(Long.parseLong(id));
         return "redirect:/";
-    }
-
-    @PostMapping
-    @RequestMapping("recipe")
-    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
-        RecipeCommand recipeCommand = recipeService.saveRecipeCommand(command);
-
-        return "redirect:/recipe/" + recipeCommand.getId() + "/show";
     }
 }

@@ -3,7 +3,6 @@ package matteo.springframework.sfgrecipeproject.commands;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import matteo.springframework.sfgrecipeproject.model.UnitOfMeasure;
 
 import java.math.BigDecimal;
 

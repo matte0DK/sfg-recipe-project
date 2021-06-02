@@ -11,10 +11,11 @@ import matteo.springframework.sfgrecipeproject.repositories.UnitOfMeasureReposit
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
+@Transactional
+
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
@@ -60,8 +61,8 @@ public class IngredientServiceImpl implements IngredientService {
         return optionalIngredient.get();
     }
 
-    @Override
     @Transactional
+    @Override
     public IngredientCommand saveIngredientCommand(IngredientCommand command) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
 
@@ -88,7 +89,7 @@ public class IngredientServiceImpl implements IngredientService {
                         .orElseThrow(() -> new RuntimeException("UOM NOT FOUND"))); //todo address this
             } else {
                 //add new Ingredient
-                recipe.addIngredient(Objects.requireNonNull(ingredientCommandToIngredient.convert(command)));
+                recipe.addIngredient(ingredientCommandToIngredient.convert(command));
             }
 
             Recipe savedRecipe = recipeRepository.save(recipe);
