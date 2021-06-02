@@ -4,6 +4,7 @@ import matteo.springframework.sfgrecipeproject.commands.IngredientCommand;
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
 import matteo.springframework.sfgrecipeproject.service.IngredientService;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
+import matteo.springframework.sfgrecipeproject.service.UnitOfMeasureService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -24,6 +24,9 @@ class IngredientControllerTest {
     @Mock
     IngredientService ingredientService;
 
+    @Mock
+    UnitOfMeasureService unitOfMeasureService;
+
     IngredientController ingredientController;
 
     MockMvc mockMvc;
@@ -32,7 +35,7 @@ class IngredientControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        ingredientController = new IngredientController(recipeService, ingredientService);
+        ingredientController = new IngredientController(recipeService, ingredientService,unitOfMeasureService);
         mockMvc = MockMvcBuilders.standaloneSetup(ingredientController).build();
     }
 
