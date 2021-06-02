@@ -14,8 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
 
+/*
+Integration tests are designed to test behaviors between objects and parts of the overall system! :
+* they have a much larger scope than Unit tests (wich are designed to test specific details in the code)
+* they can include the spring context, database and ?message brokers?
+* will run much slower than Unit tests
+*/
+
 @ExtendWith({SpringExtension.class})
-@SpringBootTest
+@SpringBootTest // spring specific test?
 public class RecipeServiceIT {
 
     public static final String NEW_DESCRIPTION = "New description";

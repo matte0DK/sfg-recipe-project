@@ -16,6 +16,14 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/*
+Unit tests / Unit testing is code written to test code under test(in production)
+* designed to test specific sections of code
+* percentage of lines of code tested is code coverage (ideal coverage about 70-80% range)
+* should be 'unity; and execute very fast
+* should have no external dependencies (no database or spring context, etc
+*/
+
 class RecipeServiceImplTest {
 
     @Mock
