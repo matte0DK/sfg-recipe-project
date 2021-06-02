@@ -19,22 +19,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RecipeController {
     private final RecipeService recipeService;
 
-    @RequestMapping("/recipe/show/{id}")
+    @RequestMapping("/recipes")
+    public String getRecipes(Model model) {
+        model.addAttribute("recipes", recipeService.getRecipes());
+        return "index";
+    }
+
+    @RequestMapping({"/recipe/{id}/show", "/recipe/{id}"})
     public String showRecipeById(@PathVariable String id, Model model) {
         model.addAttribute("recipe",recipeService.findById(Long.valueOf(id)));
         return "recipe/show";
     }
 
-    @RequestMapping("/recipe/new")
+    @RequestMapping({"/recipe/new", "/new"})
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
         return "recipe/recipeform";
     }
 
-    @PostMapping("recipe")
+    @RequestMapping("/recipe/{id}/update")
+    public String updateRecipe(@PathVariable String id, Model model) {
+        model.addAttribute("recipe", recipeService.findCommandById(Long.parseLong(id)));
+        return "recipe/recipeform";
+    }
+
+    @PostMapping
+    @RequestMapping("recipe")
     public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
         RecipeCommand recipeCommand = recipeService.saveRecipeCommand(command);
 
-        return "redirect:/recipe/show/" + recipeCommand.getId();
+        return "redirect:/recipe/" + recipeCommand.getId() + "/show";
     }
 }
