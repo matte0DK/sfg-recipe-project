@@ -1,14 +1,16 @@
 package matteo.springframework.sfgrecipeproject.controllers;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.commands.IngredientCommand;
+import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
+import matteo.springframework.sfgrecipeproject.commands.UnitOfMeasureCommand;
 import matteo.springframework.sfgrecipeproject.service.IngredientService;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
 import matteo.springframework.sfgrecipeproject.service.UnitOfMeasureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 @Slf4j
 @Controller
 public class IngredientController {
@@ -40,6 +42,28 @@ public class IngredientController {
                                        @PathVariable String id, Model model){
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    public String NewIngredientForm(@PathVariable String recipeId, Model model) {
+        // making sure we have the right id value
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.parseLong(recipeId));
+
+        if (recipeCommand == null) {
+            throw new RuntimeException();
+        }
+
+        // need to return back parent id for hidden form property
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.parseLong(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+        // init uom
+        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList", unitOfMeasureService.listAllUOMs());
+
+        return "recipe/ingredient/ingredientform";
     }
 
     @GetMapping
