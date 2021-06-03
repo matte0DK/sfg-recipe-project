@@ -3,6 +3,7 @@ package matteo.springframework.sfgrecipeproject.controllers;
 import ch.qos.logback.core.encoder.EchoEncoder;
 import matteo.springframework.sfgrecipeproject.commands.IngredientCommand;
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
+import matteo.springframework.sfgrecipeproject.model.Ingredient;
 import matteo.springframework.sfgrecipeproject.service.IngredientService;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
 import matteo.springframework.sfgrecipeproject.service.UnitOfMeasureService;
@@ -129,5 +130,14 @@ class IngredientControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/2/ingredient/3/show"));
 
+    }
+
+    @Test
+    public void testDeleteIngredient() throws Exception {
+        mockMvc.perform(get("/recipe/1/ingredient/1/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/recipe/1/ingredients"));
+
+        verify(ingredientService, times(1)).deleteById(anyLong(), anyLong());
     }
 }

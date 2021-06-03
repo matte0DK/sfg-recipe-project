@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,6 +32,7 @@ class IngredientServiceImplTest {
     @Mock
     UnitOfMeasureRepository unitOfMeasureRepository;
 
+    @Mock
     IngredientService ingredientService;
 
     //init converters
@@ -41,7 +43,7 @@ class IngredientServiceImplTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, ingredientCommandToIngredient,
                 recipeRepository, unitOfMeasureRepository);
@@ -104,6 +106,26 @@ class IngredientServiceImplTest {
 
         //then
         assertEquals(Long.valueOf(3L), savedCommand.getId());
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).save(any(Recipe.class));
+    }
+
+    @Test
+    void testDeleteIngredientByRecipeIdAndId() throws Exception {
+        // given
+        Recipe recipe = new Recipe();
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(3L);
+        recipe.addIngredient(ingredient);
+        ingredient.setRecipe(recipe);
+        Optional<Recipe> optionalRecipe = Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
+
+        // when
+        ingredientService.deleteById(1L, 3L);
+
+        // then
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, times(1)).save(any(Recipe.class));
 

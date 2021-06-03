@@ -4,9 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.commands.IngredientCommand;
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
 import matteo.springframework.sfgrecipeproject.commands.UnitOfMeasureCommand;
+import matteo.springframework.sfgrecipeproject.model.Ingredient;
 import matteo.springframework.sfgrecipeproject.service.IngredientService;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
 import matteo.springframework.sfgrecipeproject.service.UnitOfMeasureService;
+import org.dom4j.rule.Mode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +48,7 @@ public class IngredientController {
 
     @GetMapping
     @RequestMapping("recipe/{recipeId}/ingredient/new")
-    public String NewIngredientForm(@PathVariable String recipeId, Model model) {
+    public String NewRecipeIngredient(@PathVariable String recipeId, Model model) {
         // making sure we have the right id value
         RecipeCommand recipeCommand = recipeService.findCommandById(Long.parseLong(recipeId));
 
@@ -58,9 +60,9 @@ public class IngredientController {
         IngredientCommand ingredientCommand = new IngredientCommand();
         ingredientCommand.setRecipeId(Long.parseLong(recipeId));
         model.addAttribute("ingredient", ingredientCommand);
+
         // init uom
         ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
-
         model.addAttribute("uomList", unitOfMeasureService.listAllUOMs());
 
         return "recipe/ingredient/ingredientform";
@@ -85,5 +87,12 @@ public class IngredientController {
         log.debug("saved ingredient id:" + savedCommand.getId());
 
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/{id}/delete")
+    public String deleteRecipeIngredient(@PathVariable String recipeId, @PathVariable String id) {
+        ingredientService.deleteById(Long.parseLong(recipeId), Long.parseLong(id));
+        return "redirect:/recipe/" + Long.parseLong(recipeId) + "/ingredients";
     }
 }
