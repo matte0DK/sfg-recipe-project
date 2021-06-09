@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,6 +35,21 @@ class RecipeControllerTest {
     }
 
     @Test
+    void getRecipes() throws Exception {
+        Set<Recipe> recipes = new HashSet<>();
+        recipes.add(Recipe.builder().id(1L).build());
+        recipes.add(Recipe.builder().id(2L).build());
+        recipes.add(Recipe.builder().id(3L).build());
+
+        when(recipeService.getRecipes()).thenReturn(recipes);
+
+        mockMvc.perform(get("/recipes"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attributeExists("recipes"));
+    }
+
+    @Test
     void showRecipeById() throws Exception {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
@@ -46,7 +64,7 @@ class RecipeControllerTest {
 
     @Test
     void testGetNewRecipeForm() throws Exception {
-        RecipeCommand recipeCommand = new RecipeCommand();
+        /*RecipeCommand recipeCommand = new RecipeCommand();*/
 
         mockMvc.perform(get("/recipe/new"))
                 .andExpect(status().isOk())
@@ -72,11 +90,14 @@ class RecipeControllerTest {
 
     @Test
     void testGetUpdateView() throws Exception {
+        // given
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(2L);
 
+        // when
         when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
 
+        // then
         mockMvc.perform(get("/recipe/1/update"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeform"))
@@ -90,5 +111,9 @@ class RecipeControllerTest {
                 .andExpect(view().name("redirect:/"));
 
         verify(recipeService, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void updateRecipe() {
     }
 }

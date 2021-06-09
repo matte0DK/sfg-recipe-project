@@ -1,12 +1,16 @@
 package matteo.springframework.sfgrecipeproject.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@ToString
+
 @Entity
 public class Recipe {
 
@@ -41,6 +45,27 @@ public class Recipe {
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
+
+    @Builder
+    public Recipe(Long id, String description, Integer prepTime, Integer cookTime,
+                  Integer servings, String source, String url, String directions,
+                  Set<Ingredient> ingredients, Byte[] image, Difficulty difficulty,
+                  Notes notes, Set<Category> categories) {
+
+        this.id = id;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.source = source;
+        this.url = url;
+        this.directions = directions;
+        this.ingredients = ingredients;
+        this.image = image;
+        this.difficulty = difficulty;
+        this.notes = notes;
+        this.categories = categories;
+    }
 
     public Notes setNotes(Notes notes) {
         this.notes = notes;
