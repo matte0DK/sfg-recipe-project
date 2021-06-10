@@ -1,6 +1,7 @@
 package matteo.springframework.sfgrecipeproject.controllers;
 
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
+import matteo.springframework.sfgrecipeproject.exceptions.NotFoundException;
 import matteo.springframework.sfgrecipeproject.model.Recipe;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ class RecipeControllerTest {
     }
 
     @Test
-    void getRecipes() throws Exception {
+    void testGetRecipes() throws Exception {
         Set<Recipe> recipes = new HashSet<>();
         recipes.add(Recipe.builder().id(1L).build());
         recipes.add(Recipe.builder().id(2L).build());
@@ -50,9 +51,8 @@ class RecipeControllerTest {
     }
 
     @Test
-    void showRecipeById() throws Exception {
-        Recipe recipe = new Recipe();
-        recipe.setId(1L);
+    void testGetRecipeById() throws Exception {
+        Recipe recipe = Recipe.builder().id(1L).build();
 
         when(recipeService.findById(anyLong())).thenReturn(recipe);
 
@@ -111,9 +111,5 @@ class RecipeControllerTest {
                 .andExpect(view().name("redirect:/"));
 
         verify(recipeService, times(1)).deleteById(anyLong());
-    }
-
-    @Test
-    void updateRecipe() {
     }
 }

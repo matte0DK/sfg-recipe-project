@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
 import matteo.springframework.sfgrecipeproject.converters.RecipeCommandToRecipe;
 import matteo.springframework.sfgrecipeproject.converters.RecipeToRecipeCommand;
+import matteo.springframework.sfgrecipeproject.exceptions.NotFoundException;
 import matteo.springframework.sfgrecipeproject.model.Recipe;
 import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe findById(long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (optionalRecipe.isEmpty()) {
-            throw new RuntimeException();
+            throw new NotFoundException("recipe not found");
         }
         return optionalRecipe.get();
     }

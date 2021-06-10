@@ -2,8 +2,10 @@ package matteo.springframework.sfgrecipeproject.service;
 
 import matteo.springframework.sfgrecipeproject.converters.RecipeCommandToRecipe;
 import matteo.springframework.sfgrecipeproject.converters.RecipeToRecipeCommand;
+import matteo.springframework.sfgrecipeproject.exceptions.NotFoundException;
 import matteo.springframework.sfgrecipeproject.model.Recipe;
 import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -71,6 +73,21 @@ class RecipeServiceImplTest {
         assertNotNull(returnedRecipe, "Null recipe returned");
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    void getRecipeByIdTestNotFound() throws Exception {
+        // given
+        Optional<Recipe> optionalRecipe = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
+
+        // when
+        NotFoundException notFoundException = assertThrows(NotFoundException.class,
+                () -> recipeService.findById(1L));
+
+        //then
+        assertEquals("recipe not found", notFoundException.getMessage());
+        assertTrue(notFoundException.getMessage().contains("not found"));
     }
 
     @Test
