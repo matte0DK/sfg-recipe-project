@@ -3,10 +3,12 @@ package matteo.springframework.sfgrecipeproject.controllers;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
+import matteo.springframework.sfgrecipeproject.exceptions.NotFoundException;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @AllArgsConstructor
@@ -54,5 +56,15 @@ public class RecipeController {
         RecipeCommand recipeCommand = recipeService.saveRecipeCommand(command);
 
         return "redirect:/recipe/" + recipeCommand.getId() + "/show";
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound() {
+        log.error("Handling not found exception");
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("/recipe/404error");
+
+        return modelAndView;
     }
 }
