@@ -68,7 +68,16 @@ class RecipeControllerTest {
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("404error"));
+                .andExpect(view().name("/recipe/404error"));
+    }
+
+    @Test
+    void testGetRecipeByIdNotValid() throws Exception {
+        //when(recipeService.findById(anyLong())).thenThrow(NoValidValueException.class);
+
+        mockMvc.perform(get("/recipe/asdf/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("/recipe/400error"));
     }
 
     @Test

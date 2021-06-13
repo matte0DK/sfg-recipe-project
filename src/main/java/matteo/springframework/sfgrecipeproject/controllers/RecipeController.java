@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
 import matteo.springframework.sfgrecipeproject.exceptions.NotFoundException;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,19 @@ public class RecipeController {
 
         modelAndView.setViewName("/recipe/404error");
         modelAndView.addObject("exception", exception);
+
+        return modelAndView;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NumberFormatException.class)
+    public ModelAndView handleNoValidValue(Exception nfe) {
+        log.error("Handling No Valid Value Exception");
+        log.error(nfe.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("/recipe/400error");
+        modelAndView.addObject("nfe", nfe);
 
         return modelAndView;
     }
