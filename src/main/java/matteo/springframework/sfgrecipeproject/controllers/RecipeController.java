@@ -5,11 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
 import matteo.springframework.sfgrecipeproject.exceptions.NotFoundException;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class RecipeController {
     private final RecipeService recipeService;
+    private final String RECIPE_RECIPE_FORM_URL = "recipe/recipeform";
 
     // GET
     @GetMapping("/recipes")
@@ -34,7 +37,7 @@ public class RecipeController {
     @GetMapping("/recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findCommandById(Long.parseLong(id)));
-        return "recipe/recipeform";
+        return RECIPE_RECIPE_FORM_URL;
     }
 
     @GetMapping("/recipe/{id}/delete")
@@ -47,16 +50,28 @@ public class RecipeController {
     @GetMapping({"/recipe/new", "/new"})
     public String getNewRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
-        return "recipe/recipeform";
+        return RECIPE_RECIPE_FORM_URL;
     }
 
     // POST
     /* form */
     @PostMapping("recipe")
-    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand command, BindingResult bindingResult) {
         RecipeCommand recipeCommand = recipeService.saveRecipeCommand(command);
 
-        return "redirect:/recipe/" + recipeCommand.getId() + "/show";
+        if (bindingResultHasErrors(bindingResult)) {
+            return RECIPE_RECIPE_FORM_URL;
+        }
+        return String.format("redirect:/recipe/%d/show", recipeCommand.getId());
+    }
+
+    private boolean bindingResultHasErrors(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors()
+                         .forEach(objectError -> log.debug(objectError.toString()));
+            return true;
+        }
+        return false;
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -71,16 +86,4 @@ public class RecipeController {
         return modelAndView;
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public ModelAndView handleNoValidValue(Exception nfe) {
-        log.error("Handling No Valid Value Exception");
-        log.error(nfe.getMessage());
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.setViewName("/recipe/400error");
-        modelAndView.addObject("nfe", nfe);
-
-        return modelAndView;
-    }
 }

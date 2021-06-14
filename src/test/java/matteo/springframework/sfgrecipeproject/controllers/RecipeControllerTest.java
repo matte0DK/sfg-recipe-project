@@ -32,7 +32,8 @@ class RecipeControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         recipeController = new RecipeController(recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(recipeController)
+                .setControllerAdvice(new ControllerExceptionHandler()).build();
     }
 
     @Test
@@ -73,8 +74,6 @@ class RecipeControllerTest {
 
     @Test
     void testGetRecipeByIdNotValid() throws Exception {
-        //when(recipeService.findById(anyLong())).thenThrow(NoValidValueException.class);
-
         mockMvc.perform(get("/recipe/asdf/show"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("/recipe/400error"));
@@ -101,9 +100,53 @@ class RecipeControllerTest {
 
         // then
         mockMvc.perform(post("/recipe")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "")
+                .param("description", "some string")
+                .param("directions", "some directions"))
+
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/2/show"));
+    }
+
+    @Test
+    void testPostNewRecipeFormWithValidations() throws Exception {
+        // given
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(2L);
+
+        // when
+        when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
+
+        // then
+        mockMvc.perform(post("/recipe")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", ""))
+
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/recipeform"))
+                .andExpect(model().attributeExists("recipe"));
+
+    }
+
+    @Test
+    void testPostNewRecipeFormWithValidationsFail() throws Exception {
+        // given
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(2L);
+
+        // when
+        when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
+
+        // then
+        mockMvc.perform(post("/recipe")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "").param("cookTime", "3000"))
+
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/recipeform"))
+                .andExpect(model().attributeExists("recipe"));
+
     }
 
     @Test
