@@ -48,7 +48,7 @@ class RecipeServiceImplTest {
     @Test
     void getRecipes() throws Exception {
         Recipe recipe = new Recipe();
-        HashSet<Recipe> recipesData = new HashSet();
+        Set<Recipe> recipesData = new HashSet();
         Set<Recipe> recipes = recipeService.getRecipes();
 
         recipesData.add(recipe);
@@ -85,7 +85,7 @@ class RecipeServiceImplTest {
                 () -> recipeService.findById(1L));
 
         //then
-        assertEquals("recipe not found", notFoundException.getMessage());
+        assertEquals("Recipe not found for id nr. : 1", notFoundException.getMessage());
         assertTrue(notFoundException.getMessage().contains("not found"));
     }
 
