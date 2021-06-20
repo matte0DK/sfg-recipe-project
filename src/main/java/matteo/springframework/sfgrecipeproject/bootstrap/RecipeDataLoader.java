@@ -5,12 +5,14 @@ import matteo.springframework.sfgrecipeproject.model.*;
 import matteo.springframework.sfgrecipeproject.repositories.CategoryRepository;
 import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
 import matteo.springframework.sfgrecipeproject.repositories.UnitOfMeasureRepository;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -148,6 +150,10 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
 
         tacosRecipe.getCategories().add(mexicanCategory);
         tacosRecipe.getCategories().add(americanCategory);
+
+        tacosRecipe.setServings(4);
+        tacosRecipe.setSource("simply-recipes");
+        tacosRecipe.setUrl("http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ");
 
         recipes.add(tacosRecipe);
 
