@@ -7,6 +7,7 @@ import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
 import matteo.springframework.sfgrecipeproject.repositories.UnitOfMeasureRepository;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.*;
 
 @Slf4j
 @Component
+@Profile("default")
 public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private RecipeRepository recipeRepository;
@@ -31,6 +33,12 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
         recipeRepository.saveAll(getRecipes());
+    }
+
+    private Set<UnitOfMeasure> getUnitOfMeasures(Set<String> units) {
+        Set<UnitOfMeasure> unitOfMeasures = new HashSet<>();
+        units.forEach(unit -> unitOfMeasures.add(getUnitOfMeasureFromDB(unit)));
+        return unitOfMeasures;
     }
 
     private List<Recipe> getRecipes() {
