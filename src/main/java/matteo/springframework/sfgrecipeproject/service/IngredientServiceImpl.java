@@ -1,7 +1,6 @@
 package matteo.springframework.sfgrecipeproject.service;
 
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import matteo.springframework.sfgrecipeproject.commands.IngredientCommand;
 import matteo.springframework.sfgrecipeproject.converters.IngredientCommandToIngredient;
@@ -27,6 +26,7 @@ public class IngredientServiceImpl implements IngredientService {
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
+    // find method
     @Override
     public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
@@ -53,6 +53,7 @@ public class IngredientServiceImpl implements IngredientService {
         return optionalIngredient.get();
     }
 
+    // save method
     @Transactional
     @Override
     public IngredientCommand saveIngredientCommand(IngredientCommand command) {
@@ -109,20 +110,21 @@ public class IngredientServiceImpl implements IngredientService {
         return ingredientToIngredientCommand.convert(optionalSavedIngredient.get());
     }
 
+    // delete method
     @Override
     public void deleteById(Long recipeId, Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+        checkIfOptionalIsEmpty(optionalRecipe, recipeId);
 
-        if (optionalRecipe.isPresent()) {
-            Recipe recipe = optionalRecipe.get();
-            Optional<Ingredient> optionalIngredient = getIngredients(recipe, id);
+        Recipe recipe = optionalRecipe.get();
+        Optional<Ingredient> optionalIngredient = getIngredients(recipe, id);
 
-            checkIfIdIsFound(optionalIngredient, id);
-            recipeRepository.save(deleteIngredient(recipe, optionalIngredient));
-        } else {
-            log.debug("Recipe id not found. id: " + recipeId);
-        }
+        checkIfOptionalIsEmpty(optionalIngredient, id);
+        deleteIngredientFromRecipe(recipe, optionalIngredient);
+
+        recipeRepository.save(recipe);
     }
+
     private Optional<Ingredient> getIngredients(Recipe recipe, Long id) {
         log.debug("found recipe");
         return recipe
@@ -131,17 +133,18 @@ public class IngredientServiceImpl implements IngredientService {
                 .filter(ingredient -> ingredient.getId().equals(id))
                 .findFirst();
     }
-    private void checkIfIdIsFound(Optional<Ingredient> optionalIngredient, Long id) {
-        if (optionalIngredient.isEmpty()) {
-            log.debug("Ingredient id not found. id: " + id);
+
+    private void checkIfOptionalIsEmpty(Optional optional, Long id) {
+        if (optional.isEmpty()) {
+            log.debug("Id not found. id: " + id);
         }
     }
-    private Recipe deleteIngredient(Recipe recipe, Optional<Ingredient> optionalIngredient) {
+
+    private void deleteIngredientFromRecipe(Recipe recipe, Optional<Ingredient> optionalIngredient) {
         Ingredient ingredientToDelete = optionalIngredient.get();
         log.debug("found ingredient");
 
         ingredientToDelete.setRecipe(null);
         recipe.getIngredients().remove(optionalIngredient.get());
-        return recipe;
     }
 }
