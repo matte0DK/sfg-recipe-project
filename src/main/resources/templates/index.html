@@ -20,13 +20,15 @@
 <body>
 <!--/*@thymesVar id="recipes" type="java.util.List"*/-->
 <!--/*@thymesVar id="recipe" type="matteo.springframework.sfgrecipeproject.model.Recipe"*/-->
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top: 2rem">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">
 
                 <div class="panel-heading">
                     <h1 class="panel-title">My Recipes!</h1>
+                    <a style="float: right" class="btn btn-default" href="#"
+                       th:href="@{'/recipe/new'}" role="button">New</a>
                 </div>
 
                 <div class="panel-body">
