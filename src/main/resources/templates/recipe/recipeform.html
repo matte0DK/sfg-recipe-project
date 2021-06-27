@@ -18,7 +18,7 @@
 
 </head>
 <body>
-<!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
+<!--/*@thymesVar id="recipe" type="matteo.springframework.sfgrecipeproject.model.Recipe"*/-->
 <div class="container-fluid" style="margin: 20px auto">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -129,7 +129,7 @@
                                     <h1 class="panel-title">Ingredients</h1>
                                 </div>
                                 <div class="col-md-1">
-                                    <a class="btn btn-default" href="#" role="button">View</a>
+                                    <a class="btn btn-default" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/new'}" role="button">New</a>
                                 </div>
                             </div>
                         </div>
