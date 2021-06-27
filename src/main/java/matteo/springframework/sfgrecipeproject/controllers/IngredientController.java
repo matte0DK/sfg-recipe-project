@@ -5,6 +5,7 @@ import matteo.springframework.sfgrecipeproject.commands.IngredientCommand;
 import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
 import matteo.springframework.sfgrecipeproject.commands.UnitOfMeasureCommand;
 import matteo.springframework.sfgrecipeproject.model.Ingredient;
+import matteo.springframework.sfgrecipeproject.model.Recipe;
 import matteo.springframework.sfgrecipeproject.service.IngredientService;
 import matteo.springframework.sfgrecipeproject.service.RecipeService;
 import matteo.springframework.sfgrecipeproject.service.UnitOfMeasureService;

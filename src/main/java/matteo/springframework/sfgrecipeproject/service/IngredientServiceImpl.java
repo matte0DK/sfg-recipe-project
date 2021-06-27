@@ -115,28 +115,33 @@ public class IngredientServiceImpl implements IngredientService {
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            log.debug("found recipe");
+            Optional<Ingredient> optionalIngredient = getIngredients(recipe, id);
 
-            Optional<Ingredient> optionalIngredient = recipe
-                    .getIngredients()
-                    .stream()
-                    .filter(ingredient -> ingredient.getId().equals(id))
-                    .findFirst();
-
-            if (optionalIngredient.isEmpty()) {
-                log.debug("Ingredient id not found. id: " + id);
-            }
-
-            Ingredient ingredientToDelete = optionalIngredient.get();
-            log.debug("found ingredient");
-
-            ingredientToDelete.setRecipe(null);
-            recipe.getIngredients().remove(optionalIngredient.get());
-            recipeRepository.save(recipe);
+            checkIfIdIsFound(optionalIngredient, id);
+            recipeRepository.save(deleteIngredient(recipe, optionalIngredient));
         } else {
             log.debug("Recipe id not found. id: " + recipeId);
         }
+    }
+    private Optional<Ingredient> getIngredients(Recipe recipe, Long id) {
+        log.debug("found recipe");
+        return recipe
+                .getIngredients()
+                .stream()
+                .filter(ingredient -> ingredient.getId().equals(id))
+                .findFirst();
+    }
+    private void checkIfIdIsFound(Optional<Ingredient> optionalIngredient, Long id) {
+        if (optionalIngredient.isEmpty()) {
+            log.debug("Ingredient id not found. id: " + id);
+        }
+    }
+    private Recipe deleteIngredient(Recipe recipe, Optional<Ingredient> optionalIngredient) {
+        Ingredient ingredientToDelete = optionalIngredient.get();
+        log.debug("found ingredient");
 
-
+        ingredientToDelete.setRecipe(null);
+        recipe.getIngredients().remove(optionalIngredient.get());
+        return recipe;
     }
 }
