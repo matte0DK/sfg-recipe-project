@@ -1,10 +1,17 @@
 package matteo.springframework.sfgrecipeproject.bootstrap;
 
 import lombok.extern.slf4j.Slf4j;
+import matteo.springframework.sfgrecipeproject.commands.RecipeCommand;
+import matteo.springframework.sfgrecipeproject.controllers.ImageController;
+import matteo.springframework.sfgrecipeproject.converters.RecipeCommandToRecipe;
 import matteo.springframework.sfgrecipeproject.model.*;
 import matteo.springframework.sfgrecipeproject.repositories.CategoryRepository;
 import matteo.springframework.sfgrecipeproject.repositories.RecipeRepository;
 import matteo.springframework.sfgrecipeproject.repositories.UnitOfMeasureRepository;
+import matteo.springframework.sfgrecipeproject.service.ImageService;
+import matteo.springframework.sfgrecipeproject.service.ImageServiceImpl;
+import matteo.springframework.sfgrecipeproject.service.RecipeService;
+import matteo.springframework.sfgrecipeproject.service.RecipeServiceImpl;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
@@ -103,6 +110,9 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         guacamoleRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/");
         guacamoleRecipe.setServings(4);
         guacamoleRecipe.setSource("Simply Recipes");
+
+        // setting image
+
 
         // adding guacamole recipe to recipes
         recipes.add(guacamoleRecipe);

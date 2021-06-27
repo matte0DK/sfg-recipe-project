@@ -18,7 +18,7 @@
 
 </head>
 <body>
-<!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
+<!--/*@thymesVar id="recipe" type="matteo.springframework.sfgrecipeproject.model.Recipe"*/-->
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -51,9 +51,9 @@
                                 </ul>
                             </div>
                             <div class="col-md-6">
-                                <img src="../../static/images/guacamole300x300.jpg"
+                                <img src="../../static/images/guacamole300x300Mock.jpeg"
                                      th:src="@{'/recipe/' + ${recipe.id} + '/recipeimage'}"
-                                     width="200" height="200" alt="">
+                                     width="250" height="250" alt="">
                             </div>
                         </div>
                         <div class="row">

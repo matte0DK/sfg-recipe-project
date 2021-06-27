@@ -21,6 +21,14 @@ public class ImageController {
     private final ImageService imageService;
     private final RecipeService recipeService;
 
+    // POST
+    @PostMapping("recipe/{id}/image")
+    public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file) {
+        imageService.saveImageFile(Long.parseLong(id), file);
+
+        return "redirect:/recipe/" + id + "/show";
+    }
+
     // GET
     @GetMapping("recipe/{id}/image")
     public String showUploadForm(@PathVariable String id, Model model) {
@@ -45,13 +53,5 @@ public class ImageController {
             InputStream is = new ByteArrayInputStream(byteArray);
             IOUtils.copy(is, response.getOutputStream());
         }
-    }
-
-    // POST
-    @PostMapping("recipe/{id}/image")
-    public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file) {
-        imageService.saveImageFile(Long.parseLong(id), file);
-
-        return "redirect:/recipe/" + id + "/show";
     }
 }
